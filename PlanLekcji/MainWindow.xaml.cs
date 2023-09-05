@@ -44,14 +44,22 @@ namespace PlanLekcji
 
             if (openFileDialog.ShowDialog() == true)
             {
-                string path = openFileDialog.FileName;
+                try
+                {
+                    string path = openFileDialog.FileName;
 
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(path, UriKind.Absolute);
-                bitmap.EndInit();
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(path, UriKind.Absolute);
+                    bitmap.EndInit();
 
-                Plan.Source = bitmap;
+                    Plan.Source = bitmap;
+                }
+                catch
+                {
+                    MessageBox.Show("Zły format pliku, wybierz jpg albo png!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                
             }
         }
     }
