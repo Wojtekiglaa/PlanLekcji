@@ -25,6 +25,7 @@ namespace PlanLekcji
     /// </summary>
     public partial class MainWindow : Window
     {
+        private int x = 0;
         private readonly string pathToSave = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PlanLekcji", "path.txt");
         //IsolatedStorageFile storage = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
         //private string sFileName;
@@ -133,6 +134,20 @@ namespace PlanLekcji
 
             Plan.Source = bitmap;
             return p; //todo zamienic to ze zwraca mi ladnie stringa i wykonuje kod od razu
+        }
+
+        private void OnScalingItemClicked(object sender, RoutedEventArgs e)
+        {
+            x = 1-x;
+            switch (x)
+            {
+                case 0:
+                    Plan.Stretch = Stretch.Uniform;
+                    break;
+                case 1:
+                    Plan.Stretch = Stretch.Fill;
+                    break;
+            }
         }
     }
 }

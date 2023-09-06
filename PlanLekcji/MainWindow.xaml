@@ -7,12 +7,17 @@
         mc:Ignorable="d"
         Title="Plan" Height="450" Width="800" Icon="/White_Russian_25436.ico">
     <Grid>
-        <Image x:Name="Plan" HorizontalAlignment="Center" VerticalAlignment="Center" Source="\leszek.jpeg" Stretch="Fill">
+        <Image x:Name="Plan" HorizontalAlignment="Center" VerticalAlignment="Center" Source="\leszek.jpeg" Stretch="UniformToFill">
             <Image.ContextMenu>
                 <ContextMenu Name="RClick">
                     <MenuItem Header="Zmień Obraz" Click="OnMenuItemClicked">
                         <MenuItem.Icon>
                             <Image Source="folder.png"></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Zmień Skalowanie" Click="OnScalingItemClicked">
+                        <MenuItem.Icon>
+                            <Image Source="scale.png"></Image>
                         </MenuItem.Icon>
                     </MenuItem>
                 </ContextMenu>
