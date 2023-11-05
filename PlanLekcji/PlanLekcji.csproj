@@ -109,5 +109,8 @@
   <ItemGroup>
     <Resource Include="scale.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="tcan.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

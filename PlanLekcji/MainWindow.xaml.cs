@@ -62,7 +62,7 @@ namespace PlanLekcji
                 }
                 catch
                 {
-                    MessageBox.Show("Plik nie istnieje! \nProszę wybrać inny plik.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Plik nie istnieje! \nWybierz inny plik.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 
             }
@@ -74,7 +74,7 @@ namespace PlanLekcji
             {
                 Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PlanLekcji"));
             }
-           // string pathToSave = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PlanLekcji", "path.txt");
+            //string pathToSave = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PlanLekcji", "path.txt");
             StreamWriter s = File.CreateText(pathToSave);
             s.Close();
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -148,6 +148,16 @@ namespace PlanLekcji
                     Plan.Stretch = Stretch.Fill;
                     break;
             }
+        }
+
+        public void SetScalingOnBoot()
+        {
+           // MessageBox.Show("SetScalingOnBoot");
+        }
+
+        private void TrashcanClicked(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("explorer.exe", "shell:RecycleBinFolder");
         }
     }
 }
