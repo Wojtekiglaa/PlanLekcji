@@ -15,6 +15,11 @@
                             <Image Source="tcan.png"></Image>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Name="SleepItem" Header="Uśpienie?" Click="SleepHandler">
+                        <MenuItem.Icon>
+                            <Image Source="sleep.png"></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem Header="Zmień Obraz" Click="OnMenuItemClicked">
                         <MenuItem.Icon>
                             <Image Source="folder.png"></Image>
@@ -28,6 +33,5 @@
                 </ContextMenu>
             </Image.ContextMenu>
         </Image>
-
     </Grid>
 </Window>

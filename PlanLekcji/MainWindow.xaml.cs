@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,6 +26,18 @@ namespace PlanLekcji
     /// </summary>
     public partial class MainWindow : Window
     {
+        [FlagsAttribute]
+        public enum EXECUTION_STATE : uint
+        {
+            ES_AWAYMODE_REQUIRED = 0x00000040,
+            ES_CONTINUOUS = 0x80000000,
+            ES_DISPLAY_REQUIRED = 0x00000002,
+            ES_SYSTEM_REQUIRED = 0x00000001
+            // Legacy flag, should not be used.
+            // ES_USER_PRESENT = 0x00000004
+        }
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        static extern EXECUTION_STATE SetThreadExecutionState(EXECUTION_STATE esFlags);
         private int x = 0;
         private readonly string pathToSave = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PlanLekcji", "path.txt");
         //IsolatedStorageFile storage = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
@@ -148,6 +161,8 @@ namespace PlanLekcji
                     Plan.Stretch = Stretch.Fill;
                     break;
             }
+            //WebBrowser webView = new WebBrowser();
+            //webView.Source = new Uri("https://google.com");
         }
 
         public void SetScalingOnBoot()
@@ -158,6 +173,24 @@ namespace PlanLekcji
         private void TrashcanClicked(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("explorer.exe", "shell:RecycleBinFolder");
+        }
+
+        private void SleepHandler(object sender, RoutedEventArgs e)
+        {
+            x = 1 - x;
+            switch (x)
+            {
+                case 0:
+                    SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
+                    SleepItem.Background = Brushes.Red;
+                    SleepItem.Header = "Uśpienie? Nie";
+                    break;
+                case 1:
+                    SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS | EXECUTION_STATE.ES_SYSTEM_REQUIRED | EXECUTION_STATE.ES_DISPLAY_REQUIRED);
+                    SleepItem.Background = Brushes.Green;
+                    SleepItem.Header = "Uśpienie? Tak";
+                    break;
+            }
         }
     }
 }
