@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Win32;
 using static System.Net.Mime.MediaTypeNames;
 using Path = System.IO.Path;
@@ -37,7 +40,9 @@ namespace PlanLekcji
             // ES_USER_PRESENT = 0x00000004
         }
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        static extern EXECUTION_STATE SetThreadExecutionState(EXECUTION_STATE esFlags);
+        //public static extern int SendMessage(int hWnd, int hMsg, int wParam, int lParam);
+
+        public static extern EXECUTION_STATE SetThreadExecutionState(EXECUTION_STATE esFlags);
         private int x = 0;
         private readonly string pathToSave = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PlanLekcji", "path.txt");
         //IsolatedStorageFile storage = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
@@ -46,6 +51,7 @@ namespace PlanLekcji
         {
             InitializeComponent();
             FileManagement();
+            this.StateChanged += MainWindow_StateChanged;
         }
 
         private void OnMenuItemClicked(object sender, RoutedEventArgs e)
@@ -167,6 +173,7 @@ namespace PlanLekcji
 
         public void SetScalingOnBoot()
         {
+            //to chyba moge usunac
            // MessageBox.Show("SetScalingOnBoot");
         }
 
@@ -177,19 +184,80 @@ namespace PlanLekcji
 
         private void SleepHandler(object sender, RoutedEventArgs e)
         {
+            //todo: zapisuje do pliku sobie ladnie i zczytuje 
+            //todo: i zobaczyc czemu chodzi proces w tle xd
             x = 1 - x;
             switch (x)
             {
                 case 0:
                     SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
-                    SleepItem.Background = Brushes.Red;
-                    SleepItem.Header = "Uśpienie? Nie";
+                    SleepItem.Background = Brushes.Green;
+                    SleepItem.Header = "Usypianie zezwolone";
                     break;
                 case 1:
                     SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS | EXECUTION_STATE.ES_SYSTEM_REQUIRED | EXECUTION_STATE.ES_DISPLAY_REQUIRED);
-                    SleepItem.Background = Brushes.Green;
-                    SleepItem.Header = "Uśpienie? Tak";
+                    SleepItem.Background = Brushes.Red;
+                    SleepItem.Header = "Usypianie zablokowane";
                     break;
+
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+            //string[] files = Directory.GetDirectories(@"C:\Games");
+            //Debug.WriteLine(String.Join(", ", files));
+            //foreach (string file in files)
+            //{
+            //    if (File.Exists(file + @"\*.exe")) { Debug.WriteLine("jest"); };
+            //}
+            //check for unity crash handler and unreal directories and for others do some dll digging ale to jutro okok
+            //plus dynamic guziki i ikonki ok
+
+            Matcher szukaj = new();
+            szukaj.AddIncludePatterns(new[] { "**/*.exe" });
+            szukaj.AddExcludePatterns(new[] { "**/uninst000.exe" });
+
+            string searchDirectory = @"C:\Games";
+
+            IEnumerable<string> matchingFiles = szukaj.GetResultsInFullPath(searchDirectory);
+
+            foreach (string file in matchingFiles)
+            {
+                Debug.WriteLine(file);
+            }
+            //uEngineFinder(@"C:\Games");
+
+        }
+
+        private void uEngineFinder(string path)
+        {
+            List<string> uGames = new();
+            foreach (string dir in Directory.GetDirectories(path))
+            {
+                if (Directory.Exists(dir + @"\Engine")) { Debug.WriteLine("jest");
+                    if(Directory.GetFiles($"{dir}" + "*.exe").Contains("uninst000"))
+                    uGames.Add(Directory.GetFiles($"{dir}" + "*.exe").ToString()); }
+            }
+        }
+
+        private void UnityFinder(string path)
+        {
+            List<string> uGames = new();
+            foreach (string dir in Directory.GetDirectories(@"C:\Games"))
+            {
+                if (File.Exists(dir + @"\Unity\UnityCrashHandler.exe"))
+                {
+                    Debug.WriteLine("jest");
+                    uGames.Add(Directory.GetFiles($"{dir}" + "*.exe").ToString()); }
+            }
+        }
+        private void MainWindow_StateChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                Plan.Stretch = Stretch.Uniform;
             }
         }
     }
