@@ -186,6 +186,7 @@ namespace PlanLekcji
         {
             //todo: zapisuje do pliku sobie ladnie i zczytuje 
             //todo: i zobaczyc czemu chodzi proces w tle xd
+            //jakis timer pomodoro moze?????
             x = 1 - x;
             switch (x)
             {
@@ -238,7 +239,7 @@ namespace PlanLekcji
             {
                 if (Directory.Exists(dir + @"\Engine")) { Debug.WriteLine("jest");
                     if(Directory.GetFiles($"{dir}" + "*.exe").Contains("uninst000"))
-                    uGames.Add(Directory.GetFiles($"{dir}" + "*.exe").ToString()); }
+                        uGames.Add(Directory.GetFiles($"{dir}" + "*.exe").ToString()); }
             }
         }
 
@@ -259,6 +260,26 @@ namespace PlanLekcji
             {
                 Plan.Stretch = Stretch.Uniform;
             }
+            //todo: WBUDOWAC WEBVIEW Z HOMEASSISTANT XD BEKA i ze czyta z pliku funkcje sleep i adres homeassistanta i moze w pliku json se zapisywac
+            //wbudowac ze masz timer na sleep pobieranie xddd bekaaa
         }
+
+        private void SpotifyLaunch(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("SpotifyLaunch");
+        }
+
+        private void OnRestartClicked(object sender, RoutedEventArgs e)
+        {
+            var processes = Process.GetProcessesByName("Spotify");
+            foreach (var process in processes)
+            {
+                process.Kill();
+            }
+            System.Threading.Thread.Sleep(100);
+            Process.Start("spotify:");
+        }
+        //"D:\C# GIGANCI\Wstęp do programowania semestr 2-20220215T101604Z-001\Wstęp do programowania semestr 2\Lekcja 9, 10, 11\Lekcja 24-26 - System do zarządzania biblioteką.docx"
+        //tu jest implementacja streamwritera esssa zobaczyc to ale jutro moze co ....
     }
 }
