@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -20,6 +21,8 @@ using System.Windows.Shapes;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Win32;
 using static System.Net.Mime.MediaTypeNames;
+using MessageBox = System.Windows.MessageBox;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using Path = System.IO.Path;
 
 namespace PlanLekcji
@@ -278,6 +281,8 @@ namespace PlanLekcji
             }
             System.Threading.Thread.Sleep(100);
             Process.Start("spotify:");
+            System.Threading.Thread.Sleep(500);
+            SendKeys.SendWait(" ");
         }
         //"D:\C# GIGANCI\Wstęp do programowania semestr 2-20220215T101604Z-001\Wstęp do programowania semestr 2\Lekcja 9, 10, 11\Lekcja 24-26 - System do zarządzania biblioteką.docx"
         //tu jest implementacja streamwritera esssa zobaczyc to ale jutro moze co ....
