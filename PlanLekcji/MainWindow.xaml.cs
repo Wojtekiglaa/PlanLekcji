@@ -21,6 +21,7 @@ using System.Windows.Shapes;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Win32;
 using static System.Net.Mime.MediaTypeNames;
+using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using Path = System.IO.Path;
@@ -262,10 +263,25 @@ namespace PlanLekcji
             if (this.WindowState == WindowState.Maximized)
             {
                 Plan.Stretch = Stretch.Uniform;
+                if (!IsWindowOpen<hass>())
+                {
+                    var window = new hass();
+                    window.Show();
+                    window.WindowState = WindowState.Maximized;
+
+                }
             }
+
             //todo: WBUDOWAC WEBVIEW Z HOMEASSISTANT XD BEKA i ze czyta z pliku funkcje sleep i adres homeassistanta i moze w pliku json se zapisywac
             //wbudowac ze masz timer na sleep pobieranie xddd bekaaa
         }
+        public static bool IsWindowOpen<T>(string name = "") where T : Window
+        {
+            return string.IsNullOrEmpty(name)
+                ? Application.Current.Windows.OfType<T>().Any()
+                : Application.Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
+        }
+
 
         private void SpotifyLaunch(object sender, RoutedEventArgs e)
         {
@@ -281,10 +297,22 @@ namespace PlanLekcji
             }
             System.Threading.Thread.Sleep(100);
             Process.Start("spotify:");
-            System.Threading.Thread.Sleep(500);
+            System.Threading.Thread.Sleep(1000);
             SendKeys.SendWait(" ");
+        }
+
+        private void OnHassClicked(object sender, RoutedEventArgs e)
+        {
+            var window = new hass();
+            window.Show();
         }
         //"D:\C# GIGANCI\Wstęp do programowania semestr 2-20220215T101604Z-001\Wstęp do programowania semestr 2\Lekcja 9, 10, 11\Lekcja 24-26 - System do zarządzania biblioteką.docx"
         //tu jest implementacja streamwritera esssa zobaczyc to ale jutro moze co ....
+        private void MainWindow_OnClosed(object sender, EventArgs e)
+        {
+            PlanLekcji.Properties.Settings.Default.Save();
+        }
+        //TODO: dokonczyc zeby sie na duzym wyswietlalo bo kurwa cos jest pokurwione xd
+
     }
 }

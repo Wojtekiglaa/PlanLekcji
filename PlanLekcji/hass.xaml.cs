@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace PlanLekcji
 {
     /// <summary>
-    /// Interaction logic for calendarview.xaml
+    /// Interaction logic for hass.xaml
     /// </summary>
-    public partial class calendarview : Window
+    public partial class hass : Window
     {
-        public calendarview()
+        public hass()
         {
             InitializeComponent();
         }

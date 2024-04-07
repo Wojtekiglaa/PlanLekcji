@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PlanLekcji"
+        xmlns:p="clr-namespace:PlanLekcji.Properties"
         mc:Ignorable="d"
-        Title="Plan" Height="450" Width="800" Icon="/White_Russian_25436.ico">
+
+        Title="Plan" Icon="/White_Russian_25436.ico" Closed="MainWindow_OnClosed">
     <Grid>
         <!--<Button  HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" IsEnabled="True" Click="SpotifyLaunch" Width="64" Height="64">
             <Image Source="spotifi.png" IsEnabled="False" Height="64" Width="64"/>
@@ -36,6 +38,11 @@
                     <MenuItem Header="Spotify Restart" Click="OnRestartClicked">
                         <MenuItem.Icon>
                             <Image Source="spotifi.png"></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="HomeAssistant" Click="OnHassClicked">
+                        <MenuItem.Icon>
+                            <Image Source="hassicon.png"></Image>
                         </MenuItem.Icon>
                     </MenuItem>
                 </ContextMenu>
